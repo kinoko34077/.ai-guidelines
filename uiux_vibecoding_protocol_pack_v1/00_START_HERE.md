@@ -14,9 +14,9 @@
 ## 2. 作業種別と参照ファイル
 |作業種別|判定条件|読むファイル|出力|
 |---|---|---|---|
-|A. 新規UI作成|新しい画面・機能・管理画面・エディタを作る|01,02,03,04,05,templates/mock_generation.md|質問最大5個→ワイヤー3案→採用案→実装|
-|B. 既存UI改善|既存画面が見づらい・使いづらい・ボタンが大きい等|01,02,04,05,06,07,templates/ui_repair_prompt.md|問題一覧→修正方針→差分実装→検収|
-|C. UIレビューのみ|コード変更せず評価だけする|02,06,07,templates/review_output.md|問題点・根拠・修正案・優先度|
+|A. 新規UI作成|新しい画面・機能・管理画面・エディタを作る|01,02,03,03A,04,05,templates/mock_generation.md|質問最大5個→ワイヤー3案→採用案→実装|
+|B. 既存UI改善|既存画面が見づらい・使いづらい・ボタンが大きい等|01,02,03A,04,05,06,07,templates/ui_repair_prompt.md|問題一覧→修正方針→差分実装→検収|
+|C. UIレビューのみ|コード変更せず評価だけする|02,03A,06,07,templates/review_output.md|問題点・根拠・修正案・優先度|
 |D. UI思想策定|ユーザーの好み・方針を質問で固定する|03,templates/question_summary.md|質問→ui_policy.yaml→ui_config.json|
 |E. コンポーネント規約作成|ボタンやテーブル等のルールを作る|02,04,05|component rules / design tokens|
 |F. UI設定ファイル作成|後から密度・幅・表示を調整したい|02,schemas/ui_config.schema.json,project/ui_config.sample.json|ui_config.json|

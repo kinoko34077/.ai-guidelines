@@ -12,6 +12,7 @@
 - `01_AGENT_PROTOCOL.md`: AIの実行手順。
 - `02_DEFAULT_UI_POLICY.md`: 既定UI思想。
 - `03_DECISION_QUESTION_BANK.md`: 発火条件つき質問集。
+- `03A_INTERACTION_BASELINE.md`: D&D、paste、現在値からの参照開始などの標準操作規約。
 - `04_COMPONENT_RULES.md`: ボタン、フォーム、テーブル等の規約。
 - `05_LAYOUT_RULES.md`: レイアウト規約。
 - `06_ACCESSIBILITY_CHECKLIST.md`: アクセシビリティ検収。
