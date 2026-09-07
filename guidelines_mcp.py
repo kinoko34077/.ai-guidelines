@@ -41,10 +41,11 @@ SERVER_VERSION = "1.0.0"
 
 SERVER_INSTRUCTIONS = """
 このサーバーは、KiNoTchのコーディング・仕様管理・UI/UX規約を提供する読取専用MCPである。
-コーディング、仕様策定、UI作成・改善・レビューを始める前に、get_bootstrap又は
-get_guidelines_for_taskを使用して該当規約を取得すること。UI作業では
-00_START_HERE.mdを入口とし、作業種別を判定して必要な資料だけを読むこと。
-実装後はget_review_checklistsを使用し、アクセシビリティ及びUIレビューを自己検収すること。
+作業種別が分かる場合は、get_guidelines_for_taskで該当規約だけを取得すること。
+作業種別が不明な場合だけget_bootstrapを使い、返された案内に従って種別を判定すること。
+UI作業では00_START_HERE.mdを入口とし、必要な資料だけを読むこと。UIを実装又は変更した場合は、
+変更範囲に応じてget_review_checklistsを使用し、アクセシビリティ及びUIレビューを自己検収すること。
+実行環境上確認できない項目は、推測で合格とせず未確認として理由を報告すること。
 資料の記載とユーザーの明示指示が衝突する場合は、ユーザーの直近の明示指示を優先すること。
 このサーバーはファイルを変更しない。
 """.strip()
@@ -85,11 +86,7 @@ EXPECTED_FILES = (
 )
 
 BOOTSTRAP_FILES = (
-    "uiux_vibecoding_protocol_pack_v1/prompts/COPY_ME_FIRST.txt",
     "uiux_vibecoding_protocol_pack_v1/00_START_HERE.md",
-    "guidelines/AI_CODING_POLICY.md",
-    "guidelines/SPEC_POLICY.md",
-    "guidelines/UI_UX_POLICY.md",
 )
 
 TASK_FILES: dict[str, tuple[str, ...]] = {
@@ -385,16 +382,17 @@ def check_setup() -> dict[str, Any]:
 @mcp.tool()
 def get_bootstrap() -> dict[str, Any]:
     """
-    作業開始時に読むべき入口文書と共通ポリシーをまとめて取得する。
+    作業種別が未確定な場合に、入口文書と種別判定の案内を取得する。
 
-    コーディング、仕様策定、UI/UX作業の種別が未確定の場合に最初に使用する。
+    種別が分かっている場合はget_guidelines_for_taskを優先する。
     """
     result = _combine_files(BOOTSTRAP_FILES)
     result["setup"] = _setup_status()
     result["usage"] = (
-        "00_START_HERE.mdで作業種別を判定し、以後は"
+        "UI作業は00_START_HERE.mdで種別を判定し、以後は"
         "get_guidelines_for_taskで必要資料だけを取得してください。"
     )
+    result["available_task_types"] = list(TASK_FILES)
     return result
 
 
