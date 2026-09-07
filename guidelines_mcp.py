@@ -9,7 +9,8 @@ C:\Users\kinok\PRG\.ai-guidelines\
 ├─ guidelines\
 │  ├─ AI_CODING_POLICY.md
 │  ├─ SPEC_POLICY.md
-│  └─ UI_UX_POLICY.md
+│  ├─ UI_UX_POLICY.md
+│  └─ USABILITY_POLICY.md
 └─ uiux_vibecoding_protocol_pack_v1\
    ├─ 00_START_HERE.md
    ├─ 01_AGENT_PROTOCOL.md
@@ -422,6 +423,12 @@ def get_guidelines_for_task(task_type: TaskType) -> dict[str, Any]:
     result = _combine_files(paths)
     result["task_type"] = task_type
     result["requested_paths"] = list(paths)
+    if task_type in {"new_ui", "ui_improvement"}:
+        result["follow_up"] = (
+            "実装後は get_review_checklists('all') を呼び、"
+            "06_ACCESSIBILITY_CHECKLIST.md と 08_REVIEW_CHECKLIST.md を使って"
+            "変更範囲に応じた検収を行ってください。"
+        )
     return result
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-09-07 — Usability独立化後の監査指摘を反映
+
+- 新規UIの実装後に `get_review_checklists('all')` を呼ぶ導線を、入口ルーターとMCPのタスク取得結果へ追加した。
+- `UI_UX_POLICY.md` はUsabilityの正本を `USABILITY_POLICY.md` へ委譲し、画面構造・視覚表現との接続に責務を絞った。
+- Accessibility検収へFocus Not Obscured、D&D代替、Redundant Entry、色以外の状態伝達、keyboard trap、zoom/text scaling、hover/focus content、IMEを追加した。
+- ファイルパスの補正は対象プラットフォームと入力元が明確な場合だけ行い、異なるOSの構文や正当な文字を無条件変換しないようにした。
+
 ## 2026-09-07 — Usability責務の独立化
 
 - 恒久的な上位原則を `guidelines/USABILITY_POLICY.md` に分離した。
