@@ -45,6 +45,8 @@ SERVER_INSTRUCTIONS = """
 作業種別が不明な場合だけget_bootstrapを使い、返された案内に従って種別を判定すること。
 UI作業では00_START_HERE.mdを入口とし、必要な資料だけを読むこと。UIを実装又は変更した場合は、
 変更範囲に応じてget_review_checklistsを使用し、アクセシビリティ及びUIレビューを自己検収すること。
+ユーザビリティを扱う場合は、guidelines/USABILITY_POLICY.mdを上位原則として、
+uiux_vibecoding_protocol_pack_v1/07_USABILITY_BASELINE.mdの関係するカテゴリだけを参照すること。
 実行環境上確認できない項目は、推測で合格とせず未確認として理由を報告すること。
 資料の記載とユーザーの明示指示が衝突する場合は、ユーザーの直近の明示指示を優先すること。
 このサーバーはファイルを変更しない。
@@ -72,16 +74,17 @@ EXPECTED_FILES = (
     "guidelines/AI_CODING_POLICY.md",
     "guidelines/SPEC_POLICY.md",
     "guidelines/UI_UX_POLICY.md",
+    "guidelines/USABILITY_POLICY.md",
     "uiux_vibecoding_protocol_pack_v1/00_START_HERE.md",
     "uiux_vibecoding_protocol_pack_v1/01_AGENT_PROTOCOL.md",
     "uiux_vibecoding_protocol_pack_v1/02_DEFAULT_UI_POLICY.md",
     "uiux_vibecoding_protocol_pack_v1/03_DECISION_QUESTION_BANK.md",
-    "uiux_vibecoding_protocol_pack_v1/03A_INTERACTION_BASELINE.md",
     "uiux_vibecoding_protocol_pack_v1/04_COMPONENT_RULES.md",
     "uiux_vibecoding_protocol_pack_v1/05_LAYOUT_RULES.md",
     "uiux_vibecoding_protocol_pack_v1/06_ACCESSIBILITY_CHECKLIST.md",
-    "uiux_vibecoding_protocol_pack_v1/07_REVIEW_CHECKLIST.md",
-    "uiux_vibecoding_protocol_pack_v1/08_HANDOFF_PROMPT.md",
+    "uiux_vibecoding_protocol_pack_v1/07_USABILITY_BASELINE.md",
+    "uiux_vibecoding_protocol_pack_v1/08_REVIEW_CHECKLIST.md",
+    "uiux_vibecoding_protocol_pack_v1/09_HANDOFF_PROMPT.md",
     "uiux_vibecoding_protocol_pack_v1/prompts/COPY_ME_FIRST.txt",
 )
 
@@ -103,7 +106,8 @@ TASK_FILES: dict[str, tuple[str, ...]] = {
         "uiux_vibecoding_protocol_pack_v1/01_AGENT_PROTOCOL.md",
         "uiux_vibecoding_protocol_pack_v1/02_DEFAULT_UI_POLICY.md",
         "uiux_vibecoding_protocol_pack_v1/03_DECISION_QUESTION_BANK.md",
-        "uiux_vibecoding_protocol_pack_v1/03A_INTERACTION_BASELINE.md",
+        "guidelines/USABILITY_POLICY.md",
+        "uiux_vibecoding_protocol_pack_v1/07_USABILITY_BASELINE.md",
         "uiux_vibecoding_protocol_pack_v1/04_COMPONENT_RULES.md",
         "uiux_vibecoding_protocol_pack_v1/05_LAYOUT_RULES.md",
         "uiux_vibecoding_protocol_pack_v1/templates/mock_generation.md",
@@ -114,11 +118,12 @@ TASK_FILES: dict[str, tuple[str, ...]] = {
         "uiux_vibecoding_protocol_pack_v1/00_START_HERE.md",
         "uiux_vibecoding_protocol_pack_v1/01_AGENT_PROTOCOL.md",
         "uiux_vibecoding_protocol_pack_v1/02_DEFAULT_UI_POLICY.md",
-        "uiux_vibecoding_protocol_pack_v1/03A_INTERACTION_BASELINE.md",
+        "guidelines/USABILITY_POLICY.md",
+        "uiux_vibecoding_protocol_pack_v1/07_USABILITY_BASELINE.md",
         "uiux_vibecoding_protocol_pack_v1/04_COMPONENT_RULES.md",
         "uiux_vibecoding_protocol_pack_v1/05_LAYOUT_RULES.md",
         "uiux_vibecoding_protocol_pack_v1/06_ACCESSIBILITY_CHECKLIST.md",
-        "uiux_vibecoding_protocol_pack_v1/07_REVIEW_CHECKLIST.md",
+        "uiux_vibecoding_protocol_pack_v1/08_REVIEW_CHECKLIST.md",
         "uiux_vibecoding_protocol_pack_v1/templates/ui_repair_prompt.md",
         "guidelines/UI_UX_POLICY.md",
         "guidelines/AI_CODING_POLICY.md",
@@ -126,9 +131,10 @@ TASK_FILES: dict[str, tuple[str, ...]] = {
     "ui_review": (
         "uiux_vibecoding_protocol_pack_v1/00_START_HERE.md",
         "uiux_vibecoding_protocol_pack_v1/02_DEFAULT_UI_POLICY.md",
-        "uiux_vibecoding_protocol_pack_v1/03A_INTERACTION_BASELINE.md",
+        "guidelines/USABILITY_POLICY.md",
+        "uiux_vibecoding_protocol_pack_v1/07_USABILITY_BASELINE.md",
         "uiux_vibecoding_protocol_pack_v1/06_ACCESSIBILITY_CHECKLIST.md",
-        "uiux_vibecoding_protocol_pack_v1/07_REVIEW_CHECKLIST.md",
+        "uiux_vibecoding_protocol_pack_v1/08_REVIEW_CHECKLIST.md",
         "uiux_vibecoding_protocol_pack_v1/templates/review_output.md",
         "guidelines/UI_UX_POLICY.md",
     ),
@@ -142,6 +148,7 @@ TASK_FILES: dict[str, tuple[str, ...]] = {
         "uiux_vibecoding_protocol_pack_v1/schemas/ui_policy.schema.json",
         "uiux_vibecoding_protocol_pack_v1/schemas/ui_config.schema.json",
         "guidelines/UI_UX_POLICY.md",
+        "guidelines/USABILITY_POLICY.md",
     ),
     "component_rules": (
         "uiux_vibecoding_protocol_pack_v1/00_START_HERE.md",
@@ -605,11 +612,11 @@ def get_review_checklists(
             "uiux_vibecoding_protocol_pack_v1/06_ACCESSIBILITY_CHECKLIST.md",
         ),
         "ui_review": (
-            "uiux_vibecoding_protocol_pack_v1/07_REVIEW_CHECKLIST.md",
+            "uiux_vibecoding_protocol_pack_v1/08_REVIEW_CHECKLIST.md",
         ),
         "all": (
             "uiux_vibecoding_protocol_pack_v1/06_ACCESSIBILITY_CHECKLIST.md",
-            "uiux_vibecoding_protocol_pack_v1/07_REVIEW_CHECKLIST.md",
+            "uiux_vibecoding_protocol_pack_v1/08_REVIEW_CHECKLIST.md",
         ),
     }
 

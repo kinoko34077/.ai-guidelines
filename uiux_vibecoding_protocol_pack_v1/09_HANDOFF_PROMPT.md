@@ -1,4 +1,4 @@
-# 08_HANDOFF_PROMPT: コーディングAIへ渡す起動文
+# 09_HANDOFF_PROMPT: コーディングAIへ渡す起動文
 
 以下をUI/UX作業を依頼するコーディングAIへ渡す。
 
@@ -8,8 +8,8 @@
 進め方:
 - 画面構造、データ構造、危険操作、対象端末、既存ワークフローを左右する不明点だけ質問する。質問には既定値を添え、初回は最大5個にする。
 - 新規UIで画面骨格の選択が未確定なときだけ、テキストワイヤーフレームを2〜3案出す。構成が明示されている場合や局所修正では、採用理由を示して進めてよい。
-- Primary / Secondary / Row / Danger を分け、対象に自然な標準操作経路を `03A_INTERACTION_BASELINE.md` に従って検討する。
-- UIを実装又は変更した場合は、変更範囲に応じて `06_ACCESSIBILITY_CHECKLIST.md` と `07_REVIEW_CHECKLIST.md` を用いて検収する。実行できない確認は未確認理由を報告する。
+- Primary / Secondary / Row / Danger を分け、対象に自然な標準操作経路を `07_USABILITY_BASELINE.md` に従って検討する。
+- UIを実装又は変更した場合は、変更範囲に応じて `06_ACCESSIBILITY_CHECKLIST.md` と `08_REVIEW_CHECKLIST.md` を用いて検収する。実行できない確認は未確認理由を報告する。
 - ユーザーの明示指示、既存仕様、安全境界を優先し、依頼範囲外の外部公開・破壊的操作・本番操作は行わない。
 
 今回の作業内容:

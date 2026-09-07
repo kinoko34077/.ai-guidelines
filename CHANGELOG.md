@@ -1,5 +1,19 @@
 # Changelog
 
+## 2026-09-07 — Usability責務の独立化
+
+- 恒久的な上位原則を `guidelines/USABILITY_POLICY.md` に分離した。
+- 操作経路、状態・文脈継承、回復性、効率、慣習、フォーム、検索、一覧、Dialog、永続化、IME等の具体規約を `07_USABILITY_BASELINE.md` に整理した。
+- UI実装前のUsability inferenceと、実装後のExpected interaction / Continuity / Recovery / Efficiency / Conventionによる検収を `01_AGENT_PROTOCOL.md` から呼び出すようにした。
+- 既存のレビューを `08_REVIEW_CHECKLIST.md`、Handoffを `09_HANDOFF_PROMPT.md` へ移動し、MCPのタスク別取得対象と入口ルーターを更新した。
+
+## 2026-09-07 — ユーザビリティ評価軸と操作完全性の組込み
+
+- 「GUI操作性の分析考察」をもとに、ユーザビリティを機能の有無ではなく、目的達成の有効性・効率・予測可能性・回復可能性・アクセシビリティで評価する規約を追加した。
+- OS・一般GUI・同種アプリで定着した「当然期待される操作」を、対象タスクに適用可能か確認する要求源として明文化した。
+- `03A_INTERACTION_BASELINE.md` と `07_REVIEW_CHECKLIST.md` に、実装した機能だけでなく欠落操作、状態・文脈の喪失、失敗からの回復を検収する項目を追加した。
+- 指示最適化の方針に合わせ、操作経路や検証を無条件の必須事項にせず、対象タスク・変更範囲・安全境界に応じて参照・適用する構成を維持した。承認範囲と完了条件も分離した。
+
 ## 2026-09-07 — UI/UXガイドラインの監査・候補版作成・置換
 
 ### 1. 先行チャット資料と現行資料の監査
