@@ -1,0 +1,97 @@
+name: Apply devflow routing once
+
+on:
+  push:
+    branches:
+      - feat/issue-1-devflow-routing
+    paths:
+      - '.github/workflows/apply-devflow-routing-once.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: feat/issue-1-devflow-routing
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.x'
+      - name: Apply routing updates
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('guidelines_mcp.py')
+          text = path.read_text(encoding='utf-8')
+
+          text = text.replace('SERVER_VERSION = "1.0.0"', 'SERVER_VERSION = "1.1.0"')
+
+          old_instruction = 'このサーバーはファイルを変更しない。\n""".strip()'
+          new_instruction = (
+              'managed repositoryのCurrent State、resume、audit、implementation、review、Issue/PR/Work Order状態を扱う場合は、\n'
+              '静的規約から推測せず、接続されたKiNoTch Devflow MCP又はlive GitHub devflowを先に参照すること。\n'
+              'devflowは横断運用状態、対象repositoryは詳細技術正本、本サーバーは静的共通policyを担当する。\n'
+              'このサーバーはファイルを変更しない。\n""".strip()'
+          )
+          if old_instruction in text:
+              text = text.replace(old_instruction, new_instruction, 1)
+
+          policy = 'guidelines/AI_AGENT_BOOTSTRAP_POLICY.md'
+          expected_anchor = 'EXPECTED_FILES = (\n    "guidelines/AI_CODING_POLICY.md",'
+          if f'    "{policy}",' not in text.split('BOOTSTRAP_FILES =', 1)[0]:
+              if expected_anchor not in text:
+                  raise SystemExit('EXPECTED_FILES anchor not found')
+              text = text.replace(
+                  expected_anchor,
+                  f'EXPECTED_FILES = (\n    "{policy}",\n    "guidelines/AI_CODING_POLICY.md",',
+                  1,
+              )
+
+          bootstrap_anchor = 'BOOTSTRAP_FILES = (\n    "uiux_vibecoding_protocol_pack_v1/00_START_HERE.md",'
+          if bootstrap_anchor in text:
+              text = text.replace(
+                  bootstrap_anchor,
+                  f'BOOTSTRAP_FILES = (\n    "{policy}",\n    "uiux_vibecoding_protocol_pack_v1/00_START_HERE.md",',
+                  1,
+              )
+
+          for task in (
+              'coding', 'specification', 'new_ui', 'ui_improvement',
+              'ui_review', 'ui_policy', 'component_rules', 'ui_config',
+          ):
+              anchor = f'    "{task}": (\n'
+              replacement = anchor + f'        "{policy}",\n'
+              if replacement not in text:
+                  if anchor not in text:
+                      raise SystemExit(f'TASK_FILES anchor not found: {task}')
+                  text = text.replace(anchor, replacement, 1)
+
+          path.write_text(text, encoding='utf-8')
+          PY
+
+          python -m py_compile guidelines_mcp.py
+
+          python - <<'PY'
+          from pathlib import Path
+          text = Path('guidelines_mcp.py').read_text(encoding='utf-8')
+          policy = 'guidelines/AI_AGENT_BOOTSTRAP_POLICY.md'
+          assert 'SERVER_VERSION = "1.1.0"' in text
+          assert 'KiNoTch Devflow MCP' in text
+          assert text.count(policy) >= 10
+          print('routing static checks: PASS')
+          PY
+
+      - name: Commit result and remove one-time workflow
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/apply-devflow-routing-once.yml
+          git add guidelines_mcp.py
+          git commit -m "feat: route guideline consumers through live devflow"
+          git push origin HEAD:feat/issue-1-devflow-routing
