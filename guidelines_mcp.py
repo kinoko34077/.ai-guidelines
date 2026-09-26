@@ -38,7 +38,7 @@ from mcp.server import MCPServer
 
 
 SERVER_NAME = "KiNoTch Guidelines"
-SERVER_VERSION = "1.0.0"
+SERVER_VERSION = "1.1.0"
 
 SERVER_INSTRUCTIONS = """
 このサーバーは、KiNoTchのコーディング・仕様管理・UI/UX規約を提供する読取専用MCPである。
@@ -50,6 +50,9 @@ UI作業では00_START_HERE.mdを入口とし、必要な資料だけを読む�
 uiux_vibecoding_protocol_pack_v1/07_USABILITY_BASELINE.mdの関係するカテゴリだけを参照すること。
 実行環境上確認できない項目は、推測で合格とせず未確認として理由を報告すること。
 資料の記載とユーザーの明示指示が衝突する場合は、ユーザーの直近の明示指示を優先すること。
+managed repositoryのCurrent State、resume、audit、implementation、review、Issue/PR/Work Order状態を扱う場合は、
+静的規約から推測せず、接続されたKiNoTch Devflow MCP又はlive GitHub devflowを先に参照すること。
+devflowは横断運用状態、対象repositoryは詳細技術正本、本サーバーは静的共通policyを担当する。
 このサーバーはファイルを変更しない。
 """.strip()
 
@@ -72,6 +75,7 @@ MAX_RETURN_CHARS = 200_000
 MAX_SEARCH_RESULTS = 100
 
 EXPECTED_FILES = (
+    "guidelines/AI_AGENT_BOOTSTRAP_POLICY.md",
     "guidelines/AI_CODING_POLICY.md",
     "guidelines/SPEC_POLICY.md",
     "guidelines/UI_UX_POLICY.md",
@@ -90,19 +94,23 @@ EXPECTED_FILES = (
 )
 
 BOOTSTRAP_FILES = (
+    "guidelines/AI_AGENT_BOOTSTRAP_POLICY.md",
     "uiux_vibecoding_protocol_pack_v1/00_START_HERE.md",
 )
 
 TASK_FILES: dict[str, tuple[str, ...]] = {
     "coding": (
+        "guidelines/AI_AGENT_BOOTSTRAP_POLICY.md",
         "guidelines/AI_CODING_POLICY.md",
         "guidelines/SPEC_POLICY.md",
     ),
     "specification": (
+        "guidelines/AI_AGENT_BOOTSTRAP_POLICY.md",
         "guidelines/SPEC_POLICY.md",
         "guidelines/AI_CODING_POLICY.md",
     ),
     "new_ui": (
+        "guidelines/AI_AGENT_BOOTSTRAP_POLICY.md",
         "uiux_vibecoding_protocol_pack_v1/00_START_HERE.md",
         "uiux_vibecoding_protocol_pack_v1/01_AGENT_PROTOCOL.md",
         "uiux_vibecoding_protocol_pack_v1/02_DEFAULT_UI_POLICY.md",
@@ -116,6 +124,7 @@ TASK_FILES: dict[str, tuple[str, ...]] = {
         "guidelines/AI_CODING_POLICY.md",
     ),
     "ui_improvement": (
+        "guidelines/AI_AGENT_BOOTSTRAP_POLICY.md",
         "uiux_vibecoding_protocol_pack_v1/00_START_HERE.md",
         "uiux_vibecoding_protocol_pack_v1/01_AGENT_PROTOCOL.md",
         "uiux_vibecoding_protocol_pack_v1/02_DEFAULT_UI_POLICY.md",
@@ -130,6 +139,7 @@ TASK_FILES: dict[str, tuple[str, ...]] = {
         "guidelines/AI_CODING_POLICY.md",
     ),
     "ui_review": (
+        "guidelines/AI_AGENT_BOOTSTRAP_POLICY.md",
         "uiux_vibecoding_protocol_pack_v1/00_START_HERE.md",
         "uiux_vibecoding_protocol_pack_v1/02_DEFAULT_UI_POLICY.md",
         "guidelines/USABILITY_POLICY.md",
@@ -140,6 +150,7 @@ TASK_FILES: dict[str, tuple[str, ...]] = {
         "guidelines/UI_UX_POLICY.md",
     ),
     "ui_policy": (
+        "guidelines/AI_AGENT_BOOTSTRAP_POLICY.md",
         "uiux_vibecoding_protocol_pack_v1/00_START_HERE.md",
         "uiux_vibecoding_protocol_pack_v1/03_DECISION_QUESTION_BANK.md",
         "uiux_vibecoding_protocol_pack_v1/templates/question_summary.md",
@@ -152,6 +163,7 @@ TASK_FILES: dict[str, tuple[str, ...]] = {
         "guidelines/USABILITY_POLICY.md",
     ),
     "component_rules": (
+        "guidelines/AI_AGENT_BOOTSTRAP_POLICY.md",
         "uiux_vibecoding_protocol_pack_v1/00_START_HERE.md",
         "uiux_vibecoding_protocol_pack_v1/02_DEFAULT_UI_POLICY.md",
         "uiux_vibecoding_protocol_pack_v1/04_COMPONENT_RULES.md",
@@ -159,6 +171,7 @@ TASK_FILES: dict[str, tuple[str, ...]] = {
         "guidelines/UI_UX_POLICY.md",
     ),
     "ui_config": (
+        "guidelines/AI_AGENT_BOOTSTRAP_POLICY.md",
         "uiux_vibecoding_protocol_pack_v1/00_START_HERE.md",
         "uiux_vibecoding_protocol_pack_v1/02_DEFAULT_UI_POLICY.md",
         "uiux_vibecoding_protocol_pack_v1/project/ui_config.sample.json",
