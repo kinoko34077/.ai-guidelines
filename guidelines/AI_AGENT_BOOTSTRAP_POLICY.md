@@ -12,10 +12,16 @@ For KiNoTch managed repositories:
 
 - `kinoko34077/devflow` is the cross-repository operational authority.
 - The owning repository is the detailed technical authority for its requirements, specifications, Current State, Issues/PRs, code and tests.
-- `.ai-guidelines` is the shared static policy authority for coding, specification, UI/UX and usability rules.
+- `.ai-guidelines` is the shared static policy authority for coding, specification, UI/UX, usability and common GitHub operating principles.
 - GitHub Project is display/overview only and is not canonical.
 
 If these layers disagree, do not use `.ai-guidelines` or GitHub Project to overwrite live repository state. Read the owning repository, then reconcile devflow if its cross-repository summary is stale.
+
+## Shared GitHub operating rules
+
+For GitHub implementation, review, merge, rollback, resume and confirmation behavior, apply `guidelines/GITHUB_OPERATING_RULES.md` after the live-state bootstrap described below.
+
+That document provides the shared static operating principles, including safe reversible autonomous merge, Formal Review expectations, reviewer-independence escalation boundaries, Issue-first recovery and user-confirmation boundaries. Detailed and mutable Session/Review/merge semantics remain authoritative in live devflow and the owning repository.
 
 ## When live devflow is required
 

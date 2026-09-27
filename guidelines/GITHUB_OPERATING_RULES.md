@@ -1,0 +1,135 @@
+# KiNoTch. GitHub Development — Shared Operating Rules
+
+## Purpose and authority
+
+This policy gives Codex, Claude Code and other development agents the shared static operating rules for KiNoTch. GitHub development.
+
+It is a durable policy summary, not a second copy of live development state or detailed devflow lifecycle semantics.
+
+For managed repositories:
+
+- live `kinoko34077/devflow` is the cross-repository operational authority;
+- the owning repository is the detailed technical authority for its requirements, specifications, Current State, Issues/Work Orders, Pull Requests, code and tests;
+- this file defines shared static GitHub operating principles;
+- GitHub Project is a derived display/overview layer and is never canonical.
+
+When detailed Session, Review, merge, takeover, collision, audit or state semantics are needed, follow the current live devflow canon. Do not freeze mutable Work Status, Audit SHA, Active Work, blockers, run IDs or similar current-state values into this file.
+
+## 1. Use live GitHub as the source of truth
+
+For current state, resume position, Issue/PR state, Review state and implementation status, do not infer from chat history, old summaries or memory when live GitHub is available.
+
+For a managed repository, read in this order:
+
+1. live `kinoko34077/devflow/AGENTS.md` or the equivalent Devflow MCP bootstrap result;
+2. the exact open devflow `[REPO] <repository>` Control Issue;
+3. the owning repository's canonical entry points;
+4. the active owning-repository Issue / Work Order / PR and task-relevant Current State, specifications, code and tests.
+
+## 2. Keep responsibilities separated
+
+Use devflow for cross-repository state, Work Orders and common operational control. Keep detailed requirements, implementation, findings, verification and repository-specific decisions in the owning repository.
+
+GitHub Project is an overview surface only. Do not treat Project fields as authority over canonical Issues or repository state.
+
+## 3. Record durable work Issue-first
+
+Put implementation detail, findings, blockers, verification evidence, Next Action, handoff information and user-decision requirements on the appropriate owning Issue / Work Order / PR according to live devflow rules.
+
+Do not make chat history the only recovery record for non-trivial work.
+
+## 4. Use a dedicated branch and Pull Request for normal changes
+
+For normal changes, do not write directly to the default branch.
+
+Before mutation, verify the relevant current SHA, existing Issue/PR state and overlapping work. Use a dedicated branch, perform the task-relevant tests/regression/real-entry verification, and expose the resulting diff through a Pull Request.
+
+## 5. Proceed autonomously for already-authorized, safe and reversible changes
+
+Additional user confirmation is not required when all of the following are true:
+
+- the change remains inside an already-authorized scope;
+- current live state and applicable policy have been checked;
+- no blocking finding or unresolved required review/check remains;
+- required verification is current for the exact change/head being accepted;
+- catastrophic or irreversible risk is low;
+- the change can be safely restored through a normal revert/rollback Pull Request;
+- the operation does not cross a confirmation-gated boundary in section 7 or a stricter repository/task-specific rule.
+
+When these conditions hold, the agent may continue through implementation, Formal Review and merge without pausing merely to request an extra human bridge step.
+
+## 6. Leave Formal Review on non-trivial Pull Requests
+
+Every non-trivial Pull Request requires a durable Formal Review under the current devflow review protocol.
+
+An implementer-authored Formal Review is normally a valid review path. A different reviewer is **not required by default**.
+
+A different reviewer becomes mandatory when the current owning task or live devflow requires it. Shared escalation boundaries include:
+
+1. the owning Issue / Work Order explicitly requires a different reviewer;
+2. security, authentication, credential, permission or privacy boundaries change materially;
+3. destructive or difficult-to-reverse state/data migration is involved;
+4. persistent schema/data migration creates non-trivial unrecoverable loss or corruption risk;
+5. a public/shared contract has a breaking or high-impact compatibility change;
+6. one semantic change propagates across multiple repositories/consumers and rollback is not purely local;
+7. devflow authority, merge safety or source-of-truth semantics change materially;
+8. a prior Review finds a P0/P1 issue whose resolution warrants independent confirmation;
+9. the user explicitly requests another reviewer.
+
+Priority, repository identity or a broad risk label alone do not automatically create reviewer-independence when the actual change does not cross one of the applicable escalation boundaries.
+
+The live devflow review specification remains authoritative for exact-head review evidence, Review Provenance, finding severity, blocking conditions and review outcomes.
+
+## 7. Require explicit user confirmation for high-risk or externally consequential operations
+
+Do not execute the following without explicit user confirmation:
+
+- release or deploy;
+- external publication or another action with material external effect;
+- destructive deletion;
+- shared-history rewrite or force-style rollback of shared history;
+- credential, session or permission changes;
+- other security-sensitive operations;
+- other operations that are materially difficult to reverse safely.
+
+Narrow authorization for one such operation does not authorize adjacent security-sensitive or irreversible actions.
+
+## 8. Recover by adding history, not rewriting shared history
+
+If a merged change proves wrong, use a dedicated rollback branch and revert/rollback Pull Request when that is a safe recovery path.
+
+Do not use shared-main history rewriting or force-style rewind as the normal recovery mechanism.
+
+## 9. Leave recoverable state for interruption and timeout
+
+For non-trivial work, follow the live devflow Manual Execution Session protocol and keep the owning Issue / Work Order recoverable from GitHub evidence.
+
+Record bounded scope, provenance, branch/PR, latest completed checkpoint, first unfinished Next Action and blocker state at recovery-relevant milestones.
+
+For the current manual stale convention, `CLAIMED` / `RUNNING` sessions are only stale candidates after the live devflow-defined inactivity condition is satisfied; do not invent a shorter timeout from chat disappearance alone.
+
+## 10. Resume interrupted work from live evidence
+
+A new agent should inspect the owning Issue / Work Order, relevant Session Record, branch/PR, current head and CI/Review evidence before deciding whether to continue, hand off, wait, integrate or take over.
+
+The previous agent's chat narrative is not required for recovery and must not override newer live evidence.
+
+## 11. When stopping for safety, leave a recovery path
+
+If evidence is insufficient, state conflicts, or a required condition cannot be verified, do not guess and continue.
+
+Record the blocker, missing evidence, resume condition and concrete Next Action on the owning durable record so a later worker can continue without reconstructing the situation from chat.
+
+## 12. Ask the user only when human judgment or confirmation is actually required
+
+Do not ask the user to manually bridge ordinary CI waiting, normal Formal Review, merge-readiness determination, safe reversible merge, or agent-timeout recovery when existing rules and objective live evidence are sufficient to decide the next action.
+
+Ask the user when:
+
+- section 7 requires explicit confirmation;
+- the owning task explicitly reserves a decision for the user;
+- multiple valid product/specification choices require human preference rather than evidence;
+- authority or requirements genuinely conflict and no canonical source resolves them;
+- proceeding would require expanding beyond the already-authorized scope.
+
+The purpose of this rule is to remove unnecessary human relay work without weakening safety, review, provenance or source-of-truth boundaries.
