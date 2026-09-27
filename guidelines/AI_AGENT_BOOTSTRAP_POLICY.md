@@ -49,6 +49,20 @@ If the MCP is unavailable but GitHub is available, perform the same sequence dir
 
 If live devflow/GitHub cannot be read, do not infer Current State from chat history, old summaries or these static guidelines. Mark the live state as unverified and limit work accordingly.
 
+## Shortest valid execution path
+
+For every task, select the execution path from the user's objective, explicit constraints, current environment and required safety boundaries. Do not select a workflow merely because a tool, API, remote environment or workaround is available.
+
+When a direct, supported and safe path can achieve the objective, use that path. A different method being technically permitted is not sufficient reason to add steps, intermediate representations, transfer layers, proxy operations, temporary infrastructure or alternate execution environments.
+
+Treat an explicit user-specified execution path as a constraint unless a concrete blocker makes it impossible or materially unsafe. Do not silently replace it with an equivalent but more indirect route.
+
+Before adding any workaround, bridge, conversion, staging layer or auxiliary mechanism, verify that it is necessary to satisfy an actual constraint and that it reduces overall cost, risk or complexity. If it does not, omit it.
+
+Safety and confirmation boundaries remain constraints. Do not cross a prohibited, confirmation-gated, destructive, security-sensitive or difficult-to-reverse boundary when the objective can be achieved through a direct compliant path.
+
+If the selected workflow becomes materially more complex than an available direct path, stop extending the workaround and re-evaluate the objective, constraints and available execution path before continuing.
+
 ## Remote / alternate execution environment boundary
 
 Remote Desktop Commander (RDC), remote shells, cloud desktops, secondary machines and similar alternate execution environments are gap-fillers for specific unavailable operations. Their availability or user authorization does not make them the default environment for the surrounding workflow.
