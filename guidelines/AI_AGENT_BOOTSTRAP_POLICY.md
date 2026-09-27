@@ -49,6 +49,30 @@ If the MCP is unavailable but GitHub is available, perform the same sequence dir
 
 If live devflow/GitHub cannot be read, do not infer Current State from chat history, old summaries or these static guidelines. Mark the live state as unverified and limit work accordingly.
 
+## Remote / alternate execution environment boundary
+
+Remote Desktop Commander (RDC), remote shells, cloud desktops, secondary machines and similar alternate execution environments are gap-fillers for specific unavailable operations. Their availability or user authorization does not make them the default environment for the surrounding workflow.
+
+Before invoking an alternate environment:
+
+1. identify the exact operation that cannot reasonably be completed in the current/normal environment;
+2. confirm that the alternate environment is needed for that operation rather than merely convenient;
+3. preserve any user-specified scope such as “use RDC only to create the repository and initial commit”.
+
+While using the alternate environment:
+
+- perform only the bounded operation and its directly necessary verification;
+- do not expand a narrow permission into permission to move surrounding work, files, credentials or repository state into that environment;
+- do not redesign the workflow around the alternate environment merely because it has been introduced.
+
+After the bounded operation succeeds, return to the normal/current environment unless a separate concrete blocker requires continued remote execution.
+
+When two environments can both reach a shared service such as GitHub, use that service as the handoff boundary instead of transferring unrelated working files between environments. In particular, a user-supplied file that already exists in the current environment should remain there when the normal path is to clone the now-existing repository, modify it locally, and push through Git.
+
+Prefer direct standard workflows such as `clone -> edit/unpack -> test -> commit -> push` over ad-hoc transport machinery. Do not introduce Base64 staging, chunk files, reconstruction workflows, temporary CI import jobs or equivalent transfer layers when the current environment can directly perform the normal Git/file operation.
+
+If a workaround becomes materially more complex than the direct workflow it is replacing, stop adding machinery and re-evaluate the original objective, environment boundaries and available shared handoff points before continuing.
+
 ## Reporting
 
 Use Issue-first reporting:
