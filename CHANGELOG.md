@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-09-28 — GitHub共通運用ルールを追加
+
+- `guidelines/GITHUB_OPERATING_RULES.md` を追加し、live GitHub正本、責務分離、Issue-first、dedicated branch + PR、安全かつ可逆な変更の自律実行、Formal Review、別Reviewer境界、確認必須操作、revert復旧、Session復旧、不要なユーザー確認の抑制を12項目で明文化した。
+- 非自明PRではFormal Reviewを必須としつつ、実装者本人のFormal Reviewを通常の有効経路とし、別Reviewerはsecurity/auth/credential/permission/privacy、不可逆migration、breaking shared contract、source-of-truth/merge safety変更等の独立確認が必要な境界に限定した。
+- `guidelines/AI_AGENT_BOOTSTRAP_POLICY.md` から新規ルールへ参照を追加し、静的な共通原則は `.ai-guidelines`、live stateと詳細なSession/Review/merge semanticsはdevflow/owning repositoryという既存の権限分離を維持した。
+
 ## 2026-09-07 — Usability独立化後の監査指摘を反映
 
 - 新規UIの実装後に `get_review_checklists('all')` を呼ぶ導線を、入口ルーターとMCPのタスク取得結果へ追加した。
@@ -72,7 +78,7 @@
 - 先行チャットの結論と候補版を再照合した。
 - 先行資料が求める「資料の存在と読む条件の分離」「安全境界の維持」「タスク依存の検証」「承認範囲と完了条件の分離」に反していないことを確認した。
 - 置換前の現行6ファイルをバックアップした。
-- バックアップ先: `C:\Users\kinok\AppData\Local\Temp\ai-guidelines-before-v2-20260907`
+- バックアップ先: `C:\\Users\\kinok\\AppData\\Local\\Temp\\ai-guidelines-before-v2-20260907`
 - 候補版6ファイルを正式位置へ置換した。
 - 置換後に候補版と正式ファイルのSHA-256が一致することを確認した。
 
