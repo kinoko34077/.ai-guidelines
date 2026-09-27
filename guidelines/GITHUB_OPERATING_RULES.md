@@ -122,7 +122,34 @@ Record the blocker, missing evidence, resume condition and concrete Next Action 
 
 ## 12. Ask the user only when human judgment or confirmation is actually required
 
-Do not ask the user to manually bridge ordinary CI waiting, normal Formal Review, merge-readiness determination, safe reversible merge, or agent-timeout recovery when existing rules and objective live evidence are sufficient to decide the next action.
+Do not ask the user to manually bridge ordinary CI waiting, normal Formal Review, merge-readiness determination, safe reversible merge, agent-timeout recovery, or ordinary verification when existing rules, available tooling and objective evidence are sufficient to decide the next action.
+
+### Machine-verifiable checks are agent-owned
+
+When a required check can be observed, measured or reproduced with tools available to the agent or implementation environment, the agent should perform that check directly before asking the user to do it.
+
+Examples include, when applicable:
+
+- running repository-owned tests, builds, linters, benchmarks or smoke checks;
+- reading logs, API responses, process state or generated artifacts;
+- exercising the real CLI/API/GUI/Web entry point;
+- driving a browser through supported automation or DevTools interfaces;
+- reading DOM, network, performance, layout, accessibility-tree or runtime metrics;
+- checking filesystem/repository state that is directly available to the authorized environment.
+
+Do not convert a machine-verifiable check into a generic human handoff merely because a user could also inspect it manually. In particular, avoid requests such as “open F12 and report the value”, “confirm visually that it seems smooth”, or “try it and tell me whether it works” when the relevant property can be obtained directly through available instrumentation or reproducible automation.
+
+Verification evidence should identify the actual source of the conclusion: command/check, exact SHA or artifact when relevant, measured value or observed state, comparison rule/threshold when one exists, and the resulting pass/fail or equivalent conclusion. Do not replace evidence with the agent's subjective statement that something “looks good”.
+
+Human verification remains appropriate when the unresolved property genuinely depends on:
+
+- human preference or product/specification choice;
+- subjective perception that is itself the requirement and is not adequately represented by objective proxies;
+- a physical or external state unavailable to authorized tooling;
+- end-to-end assistive-technology or device behavior that the available environment cannot actually exercise;
+- explicit safety, authority or confirmation boundaries requiring a human decision.
+
+When such a boundary remains, state it narrowly. Do not use a broad “human verification required” label to cover nearby checks that are mechanically verifiable.
 
 Ask the user when:
 
@@ -130,6 +157,7 @@ Ask the user when:
 - the owning task explicitly reserves a decision for the user;
 - multiple valid product/specification choices require human preference rather than evidence;
 - authority or requirements genuinely conflict and no canonical source resolves them;
-- proceeding would require expanding beyond the already-authorized scope.
+- proceeding would require expanding beyond the already-authorized scope;
+- the remaining acceptance property falls into one of the genuinely human-only boundaries above and no authorized machine evidence can establish it.
 
-The purpose of this rule is to remove unnecessary human relay work without weakening safety, review, provenance or source-of-truth boundaries.
+The purpose of this rule is to remove unnecessary human relay work without weakening safety, review, provenance, verification quality or source-of-truth boundaries.
