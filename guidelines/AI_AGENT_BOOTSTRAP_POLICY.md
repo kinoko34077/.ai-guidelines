@@ -23,7 +23,7 @@ For GitHub implementation, review, merge, rollback, resume and confirmation beha
 
 For GitHub-backed work that can outlive one immediate read-only operation, also apply `guidelines/DURABLE_PROGRESS_POLICY.md`. Durable progress externalization is an execution precondition: establish or repair the owning GitHub progress surface before substantive multi-step mutation, review, verification, audit or investigation continues. Safety and explicit Human gates remain stronger; throughput, shortest-path optimization, convenience and chat concision do not override this durability rule.
 
-That document provides the shared static operating principles, including safe reversible autonomous merge, Formal Review expectations, reviewer-independence escalation boundaries, Issue-first recovery and user-confirmation boundaries. Detailed and mutable Session/Review/merge semantics remain authoritative in live devflow and the owning repository.
+`guidelines/GITHUB_OPERATING_RULES.md` provides the shared static operating principles, including safe reversible autonomous merge, Formal Review expectations, reviewer-independence escalation boundaries, Issue-first recovery and user-confirmation boundaries. Detailed and mutable Session/Review/merge semantics remain authoritative in live devflow and the owning repository.
 
 ## When live devflow is required
 
