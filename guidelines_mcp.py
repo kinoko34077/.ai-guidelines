@@ -235,12 +235,22 @@ def _normalise_relative_path(relative_path: str) -> PurePosixPath:
     return path
 
 
-def _resolve_file(relative_path: str) -> Path:
-    rel = _normalise_relative_path(relative_path)
-    candidate = (ROOT / Path(*rel.parts)).resolve()
+def _canonical_under_root(path: Path) -> Path:
+    """Resolve links/junctions and prove the resulting path stays under ROOT."""
+    try:
+        candidate = path.resolve()
+    except (OSError, RuntimeError) as exc:
+        raise ValueError(f"Path cannot be resolved safely: {path}") from exc
 
     if not candidate.is_relative_to(ROOT):
-        raise ValueError("規約ルート外のパスは使用出来ません。")
+        raise ValueError("Path resolves outside the guidelines root.")
+    return candidate
+
+
+def _resolve_file(relative_path: str) -> Path:
+    rel = _normalise_relative_path(relative_path)
+    candidate = _canonical_under_root(ROOT / Path(*rel.parts))
+
     if not candidate.exists():
         raise FileNotFoundError(f"ファイルが見つかりません: {rel.as_posix()}")
     if not candidate.is_file():
@@ -258,7 +268,7 @@ def _resolve_file(relative_path: str) -> Path:
 
 def _resolve_directory(relative_path: str) -> Path:
     rel = _normalise_relative_path(relative_path)
-    candidate = (ROOT / Path(*rel.parts)).resolve()
+    candidate = _canonical_under_root(ROOT / Path(*rel.parts))
 
     if not candidate.is_relative_to(ROOT):
         raise ValueError("規約ルート外のパスは使用出来ません。")
@@ -271,6 +281,9 @@ def _resolve_directory(relative_path: str) -> Path:
 
 
 def _read_text(path: Path) -> tuple[str, str]:
+    path = _canonical_under_root(path)
+    if not path.is_file():
+        raise ValueError(f"Not a file: {path}")
     data = path.read_bytes()
 
     if len(data) > MAX_FILE_BYTES:
@@ -290,14 +303,34 @@ def _read_text(path: Path) -> tuple[str, str]:
 
 def _iter_guideline_files(base: Path | None = None) -> list[Path]:
     files: list[Path] = []
+    pending: list[Path] = []
+    visited: set[Path] = set()
 
     scan_roots = [base] if base is not None else [ROOT / name for name in ALLOWED_TOP_LEVEL]
 
-    for scan_root in scan_roots:
-        if scan_root is None or not scan_root.exists() or not scan_root.is_dir():
+    for raw_root in scan_roots:
+        if raw_root is None:
             continue
+        try:
+            scan_root = _canonical_under_root(raw_root)
+        except ValueError:
+            continue
+        if scan_root.exists() and scan_root.is_dir():
+            pending.append(scan_root)
 
-        for path in scan_root.rglob("*"):
+    while pending:
+        directory = pending.pop()
+        if directory in visited:
+            continue
+        visited.add(directory)
+        for raw_path in directory.iterdir():
+            try:
+                path = _canonical_under_root(raw_path)
+            except ValueError:
+                continue
+            if path.is_dir():
+                pending.append(path)
+                continue
             if (
                 path.is_file()
                 and path.suffix.lower() in SUPPORTED_SUFFIXES
@@ -309,6 +342,9 @@ def _iter_guideline_files(base: Path | None = None) -> list[Path]:
 
 
 def _file_metadata(path: Path) -> dict[str, Any]:
+    path = _canonical_under_root(path)
+    if not path.is_file():
+        raise ValueError(f"Not a file: {path}")
     stat = path.stat()
     return {
         "path": path.relative_to(ROOT).as_posix(),
