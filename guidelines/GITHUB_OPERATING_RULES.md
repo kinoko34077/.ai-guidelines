@@ -38,6 +38,8 @@ Put implementation detail, findings, blockers, verification evidence, Next Actio
 
 Do not make chat history the only recovery record for non-trivial work.
 
+For qualifying work also apply `guidelines/DURABLE_PROGRESS_POLICY.md`, including its rule that the worker causing an accepted state transition reconciles the directly affected durable surfaces before leaving the bounded unit.
+
 ## 4. Use a dedicated branch and Pull Request for normal changes
 
 For normal changes, do not write directly to the default branch.
@@ -108,6 +110,26 @@ Record bounded scope, provenance, branch/PR, latest completed checkpoint, first 
 
 For the current manual stale convention, `CLAIMED` / `RUNNING` sessions are only stale candidates after the live devflow-defined inactivity condition is satisfied; do not invent a shorter timeout from chat disappearance alone.
 
+### 9.1 Reconcile directly affected durable surfaces before exit
+
+The worker that produces an accepted transition is responsible for reconciling the finite set of durable records that transition directly made stale, contradictory or concretely suspect.
+
+Before moving to the next materially distinct unit or leaving as `DONE`, `RELEASED`, `HANDOFF`, `WAITING`, or equivalent, inspect the applicable affected surfaces, such as:
+
+- owning Issue / Work Order status, blocker and Next Action;
+- progress ledger and Session state;
+- branch / PR / accepted exact-head references;
+- parent/child/dependency Issue routing;
+- active-work, candidate, supply or routing projections;
+- Current State, specification or ADR only when the accepted transition changed information they own;
+- devflow Repository Control only when the cross-repository summary changed.
+
+Do not turn this into a global sweep. The affected set is bounded to surfaces the current transition changed or gave a concrete reason to suspect are stale.
+
+Correct safe in-scope stale state before exit. If the stale surface belongs to another active worker, requires Human/security/permission authority, or is an independent unrelated defect, do not take it over; leave a durable finding/reference for its owner.
+
+Cross-repository consistency audits are a backstop for missed drift and interaction defects, not the routine cleanup owner for state made stale by the producing worker.
+
 ## 10. Resume interrupted work from live evidence
 
 A new agent should inspect the owning Issue / Work Order, relevant Session Record, branch/PR, current head and CI/Review evidence before deciding whether to continue, hand off, wait, integrate or take over.
@@ -120,9 +142,11 @@ If evidence is insufficient, state conflicts, or a required condition cannot be 
 
 Record the blocker, missing evidence, resume condition and concrete Next Action on the owning durable record so a later worker can continue without reconstructing the situation from chat.
 
+Reconcile any directly affected surfaces that can be updated safely without crossing the blocker; do not leave avoidable stale routing behind merely because the primary task is waiting.
+
 ## 12. Ask the user only when human judgment or confirmation is actually required
 
-Do not ask the user to manually bridge ordinary CI waiting, normal Formal Review, merge-readiness determination, safe reversible merge, agent-timeout recovery, or ordinary verification when existing rules, available tooling and objective evidence are sufficient to decide the next action.
+Do not ask the user to manually bridge ordinary CI waiting, normal Formal Review, merge-readiness determination, safe reversible merge, agent-timeout recovery, ordinary verification, or routine affected-surface reconciliation when existing rules, available tooling and objective evidence are sufficient to decide the next action.
 
 ### Machine-verifiable checks are agent-owned
 
