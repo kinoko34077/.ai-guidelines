@@ -4,9 +4,9 @@
 
 For GitHub-backed agent work, recoverable progress is a required execution property rather than optional reporting hygiene.
 
-The goal is to prevent interruption from forcing speculative reconstruction, duplicated accepted work, or unnecessary full re-verification.
+The goal is to prevent interruption from forcing speculative reconstruction, duplicated accepted work, unnecessary full re-verification, or stale durable records that contradict an already accepted state transition.
 
-For managed repositories, live devflow remains authoritative for exact Session/cursor/review/collision semantics. This document defines the shared static rule that agents must externalize progress before substantive multi-step work continues.
+For managed repositories, live devflow remains authoritative for exact Session/cursor/review/collision semantics. This document defines the shared static rule that agents must externalize progress before substantive multi-step work continues and must reconcile the finite durable surface set directly affected by their own accepted transition before leaving that bounded unit.
 
 ## Priority
 
@@ -14,7 +14,7 @@ Within already-authorized work:
 
 ```text
 Safety / explicit Human gate
-> durable progress externalization
+> durable progress externalization and affected-surface reconciliation
 > throughput / shortest-path / convenience / chat concision
 ```
 
@@ -55,9 +55,34 @@ Before beginning the next materially distinct recovery unit:
 1. finish the current bounded unit;
 2. write its result/checkpoint to the durable GitHub surface;
 3. record the first unfinished next action;
-4. then start the next unit.
+4. reconcile the durable surfaces directly affected by the accepted state transition when they would otherwise become stale or contradictory;
+5. then start the next unit.
 
-Do not defer all progress writing until the end of the chat or until a user-facing status response.
+Do not defer all progress writing or reconciliation until the end of the chat or until a user-facing status response.
+
+## Affected-surface reconciliation before exit
+
+A worker that causes an accepted state transition owns the cleanup of the finite durable surface set made stale, contradictory, or concretely suspect by that transition.
+
+Before moving to the next materially distinct unit, or before leaving the task as `DONE`, `RELEASED`, `HANDOFF`, `WAITING`, or equivalent, inspect the directly affected surfaces as applicable. Typical examples include:
+
+- owning Issue / Work Order status, blocker and Next Action;
+- durable progress ledger / checkpoint;
+- active Execution Session state;
+- branch / PR / accepted exact head references;
+- parent, child or dependency Issues whose current routing changed;
+- active-work, candidate, supply or routing projections that still advertise retired work;
+- repository Current State when accepted repository-level state changed;
+- specification / ADR when accepted durable requirements or design changed;
+- Repository Control when the cross-repository summary changed.
+
+This is **not** a requirement to sweep every Issue or repository after each task. The inspection is bounded to surfaces that the current transition directly changed or gave a concrete reason to suspect are stale.
+
+If an in-scope stale status, resolved blocker, obsolete routing reference or contradictory current-state projection can be corrected safely within existing authority, correct it before leaving the bounded unit.
+
+Do not take over another active worker's semantic scope, cross a Human/security/permission gate, or absorb an independent unrelated defect merely because it was noticed during cleanup. Record a durable finding/reference for the owning task instead.
+
+A bounded unit is not operationally complete until its accepted result, recovery checkpoint, and directly affected durable projections agree. Cross-repository or periodic consistency audits remain a backstop for missed drift and interaction defects; they are not the normal garbage collector for producer-owned stale state.
 
 ## Working notes
 
@@ -86,8 +111,8 @@ Resume from the latest durable checkpoint. Do not repeat already accepted setup,
 
 Re-observe or re-verify only volatile or changed state, or a concrete inconsistency/missing-evidence boundary.
 
-For managed repositories, consult live `kinoko34077/devflow` for the current detailed resume, Session, cursor, takeover, review, and collision contract.
+For managed repositories, consult live `kinoko34077/devflow` for the current detailed resume, Session, cursor, takeover, review, collision, and affected-surface reconciliation contract.
 
 ## Chat behavior
 
-Chat may summarize the current result and need not duplicate the full progress ledger. Chat brevity is never permission to skip durable GitHub externalization.
+Chat may summarize the current result and need not duplicate the full progress ledger. Chat brevity is never permission to skip durable GitHub externalization or affected-surface reconciliation.

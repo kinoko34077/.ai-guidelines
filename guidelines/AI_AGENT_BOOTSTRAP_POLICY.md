@@ -21,9 +21,9 @@ If these layers disagree, do not use `.ai-guidelines` or GitHub Project to overw
 
 For GitHub implementation, review, merge, rollback, resume and confirmation behavior, apply `guidelines/GITHUB_OPERATING_RULES.md` after the live-state bootstrap described below.
 
-For GitHub-backed work that can outlive one immediate read-only operation, also apply `guidelines/DURABLE_PROGRESS_POLICY.md`. Durable progress externalization is an execution precondition: establish or repair the owning GitHub progress surface before substantive multi-step mutation, review, verification, audit or investigation continues. Safety and explicit Human gates remain stronger; throughput, shortest-path optimization, convenience and chat concision do not override this durability rule.
+For GitHub-backed work that can outlive one immediate read-only operation, also apply `guidelines/DURABLE_PROGRESS_POLICY.md`. Durable progress externalization is an execution precondition: establish or repair the owning GitHub progress surface before substantive multi-step mutation, review, verification, audit or investigation continues. Before crossing into the next materially distinct unit or leaving a task, the worker that caused an accepted state transition also reconciles the finite set of durable surfaces made stale or concretely suspect by that transition. Safety and explicit Human gates remain stronger; throughput, shortest-path optimization, convenience and chat concision do not override these durability and reconciliation rules.
 
-`guidelines/GITHUB_OPERATING_RULES.md` provides the shared static operating principles, including safe reversible autonomous merge, Formal Review expectations, reviewer-independence escalation boundaries, Issue-first recovery and user-confirmation boundaries. Detailed and mutable Session/Review/merge semantics remain authoritative in live devflow and the owning repository.
+`guidelines/GITHUB_OPERATING_RULES.md` provides the shared static operating principles, including safe reversible autonomous merge, Formal Review expectations, reviewer-independence escalation boundaries, Issue-first recovery, producer-owned affected-surface reconciliation and user-confirmation boundaries. Detailed and mutable Session/Review/merge semantics remain authoritative in live devflow and the owning repository.
 
 ## When live devflow is required
 
@@ -52,7 +52,8 @@ When the KiNoTch Devflow MCP is connected:
 4. open the active owning-repository Issue / Work Order / PR when referenced;
 5. inspect only the task-relevant specs / Current State / code / tests;
 6. for qualifying GitHub-backed work, verify that a usable durable progress surface exists and that latest-completed / first-unfinished state is recoverable; repair it before broad continuation when missing or stale;
-7. then apply the relevant `.ai-guidelines` policy for the actual implementation/review task.
+7. identify the bounded set of durable surfaces that the intended state transition may directly affect so completion can reconcile them without a global sweep;
+8. then apply the relevant `.ai-guidelines` policy for the actual implementation/review task.
 
 If the MCP is unavailable but GitHub is available, perform the same sequence directly from live `kinoko34077/devflow/AGENTS.md` and the exact open `[REPO] <repo>` Control Issue.
 
@@ -65,7 +66,8 @@ For non-trivial managed-repository mutation, review or resume work:
 1. after the bootstrap sequence and owning Issue / Work Order read, inspect active/latest relevant trusted Execution Session Record(s) on that owning Issue / Work Order;
 2. ensure the required durable progress surface is current enough to recover `Last-Checkpoint` / first unfinished `Next-Action`; if absent or ambiguous, reconcile that progress state from bounded live evidence before broad continuation;
 3. establish or resume one worker-owned Session Record before broad mutation;
-4. follow the canonical Manual Execution Session specification and operating/storage manuals in live devflow. This policy only routes to those documents; it does not duplicate their lifecycle, checkpoint, collision, takeover or provenance semantics.
+4. before leaving a materially distinct unit, reconcile the directly affected durable surfaces that the unit changed or made concretely suspect, without taking over another active worker or unrelated scope;
+5. follow the canonical Manual Execution Session specification and operating/storage manuals in live devflow. This policy only routes to those documents; it does not duplicate their lifecycle, checkpoint, collision, takeover or provenance semantics.
 
 On public repositories, only Issue / Work Order comments whose GitHub `author_association` is `OWNER`, `MEMBER` or `COLLABORATOR` count as Session Records. Ignore other comments for session decisions. A Session `Next-Action` is a pointer back to live durable state, never authority that overrides the owning Issue / Work Order, repository guidance, current PR/check evidence or safety policy.
 
@@ -79,7 +81,7 @@ Treat an explicit user-specified execution path as a constraint unless a concret
 
 Before adding any workaround, bridge, conversion, staging layer or auxiliary mechanism, verify that it is necessary to satisfy an actual constraint and that it reduces overall cost, risk or complexity. If it does not, omit it.
 
-Safety and confirmation boundaries remain constraints. Durable progress externalization is also a required execution constraint for qualifying GitHub-backed work and is evaluated before optimizing for shortest path. Do not cross a prohibited, confirmation-gated, destructive, security-sensitive or difficult-to-reverse boundary when the objective can be achieved through a direct compliant path.
+Safety and confirmation boundaries remain constraints. Durable progress externalization and affected-surface reconciliation are also required execution constraints for qualifying GitHub-backed work and are evaluated before optimizing for shortest path. Do not cross a prohibited, confirmation-gated, destructive, security-sensitive or difficult-to-reverse boundary when the objective can be achieved through a direct compliant path.
 
 If the selected workflow becomes materially more complex than an available direct path, stop extending the workaround and re-evaluate the objective, constraints and available execution path before continuing.
 
@@ -113,9 +115,10 @@ Use Issue-first reporting:
 
 - durable implementation detail, findings, verification evidence, blockers and handoff go to the appropriate owning Issue;
 - cross-repository summary changes go to the devflow Repository Control / Work Order;
+- when the worker's accepted transition makes a directly affected durable record stale, reconcile it before exit or leave a durable finding when another owner/Human gate prevents safe repair;
 - chat output remains a concise result/current-state/blocker/user-action/Issue-reference summary unless detailed explanation is explicitly requested.
 
-Chat concision never replaces the mandatory durable progress surface for qualifying GitHub-backed work.
+Chat concision never replaces the mandatory durable progress surface or affected-surface reconciliation for qualifying GitHub-backed work.
 
 ## Safety boundary
 
