@@ -56,9 +56,10 @@ Before beginning the next materially distinct recovery unit:
 2. write its result/checkpoint to the durable GitHub surface;
 3. record the first unfinished next action;
 4. reconcile the durable surfaces directly affected by the accepted state transition when they would otherwise become stale or contradictory;
-5. then start the next unit.
+5. run the global replan / termination gate against the original objective, current acceptance and live evidence, explicitly choosing `CONTINUE / CHANGE_PATH / SPLIT / HOLD / STOP`;
+6. start the next unit only when continued work directly serves an unmet acceptance condition, a concrete defect/safety boundary, or an explicit user request.
 
-Do not defer all progress writing or reconciliation until the end of the chat or until a user-facing status response.
+Do not defer all progress writing or reconciliation until the end of the chat or until a user-facing status response. A durable checkpoint is also a decision boundary: if acceptance is already satisfied, complete only the minimum required reconciliation and stop.
 
 ## Affected-surface reconciliation before exit
 
