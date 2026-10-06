@@ -40,6 +40,16 @@ Do not make chat history the only recovery record for non-trivial work.
 
 For qualifying work also apply `guidelines/DURABLE_PROGRESS_POLICY.md`, including its rule that the worker causing an accepted state transition reconciles the directly affected durable surfaces before leaving the bounded unit.
 
+### Material-boundary global replan
+
+The compact invariants in `guidelines/AI_AGENT_BOOTSTRAP_POLICY.md` apply throughout GitHub work, not only at startup.
+
+After each materially distinct checkpoint, on a tool/execution-path switch, and before optional extra verification or surrounding reconciliation, re-evaluate the original objective, current acceptance state, unresolved correctness/safety gaps and live evidence. Explicitly choose `CONTINUE / CHANGE_PATH / SPLIT / HOLD / STOP`.
+
+Do not continue because another operation is merely related, available, cleaner, or potentially useful. Another material unit must directly serve an unmet acceptance condition, a concrete defect/safety boundary, or an explicit user request. When acceptance is satisfied, reconcile only the finite directly affected durable surfaces and stop.
+
+Prefer repository/GitHub-native execution and evidence surfaces. Repeated friction in an indirect or alternate tool route is a reason to change paths or leave a durable handoff, not to build more ceremony around that route.
+
 ## 4. Use a dedicated branch and Pull Request for normal changes
 
 For normal changes, do not write directly to the default branch.
