@@ -17,6 +17,16 @@ For KiNoTch managed repositories:
 
 If these layers disagree, do not use `.ai-guidelines` or GitHub Project to overwrite live repository state. Read the owning repository, then reconcile devflow if its cross-repository summary is stale.
 
+## Managed-repository operating invariants — read before work
+
+For managed-repository development, apply these compact rules before substantive work. This is a static startup summary; live `kinoko34077/devflow/AGENTS.md` remains authoritative for the detailed and current operating contract.
+
+1. **Recovery before throughput.** Establish or reuse the required durable GitHub progress surface before qualifying multi-step work. Keep the Task Checkpoint Cursor when eligible, and checkpoint each materially distinct unit before starting the next one.
+2. **Authority before implementation.** Read live devflow / owning-repository authority first: the Repository Control, owning Issue / Work Order, and the task-relevant canonical specification / Current State / accepted plan / handoff or source material they reference. Do not reconstruct current task state from chat. Historical proposals remain context unless current authority promotes them.
+3. **Native/direct path first.** Prefer repository- and GitHub-native scripts, tests, Actions, MCP/API/CLI surfaces and direct supported workflows before inventing bridges, emulating another environment, or asking a human to relay machine-verifiable state.
+4. **Global replan at each material boundary.** After checkpointing a materially distinct unit, when changing tool/execution paths, and before extra verification or surrounding reconciliation, return to the original user objective, current acceptance state and live evidence. Explicitly choose among `CONTINUE / CHANGE_PATH / SPLIT / HOLD / STOP`. Start more work only for an unmet acceptance condition, a concrete defect/safety boundary, or an explicit user request. If acceptance is satisfied, do only the minimum required reconciliation and stop.
+5. **RDC / alternate environments are last-resort gap fillers.** Use Remote Desktop Commander, remote shells/desktops or equivalent only for an exact operation unavailable through the normal/native path. Keep it bounded and return to the normal path after the gap is closed. Repeated tool friction triggers path re-selection rather than escalation of the workaround.
+
 ## Shared GitHub operating rules
 
 For GitHub implementation, review, merge, rollback, resume and confirmation behavior, apply `guidelines/GITHUB_OPERATING_RULES.md` after the live-state bootstrap described below.
