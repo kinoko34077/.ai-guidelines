@@ -27,6 +27,8 @@ For managed-repository development, apply these compact rules before substantive
 4. **Global replan at each material boundary.** After checkpointing a materially distinct unit, when changing tool/execution paths, and before extra verification or surrounding reconciliation, return to the original user objective, current acceptance state and live evidence. Explicitly choose among `CONTINUE / CHANGE_PATH / SPLIT / HOLD / STOP`. Start more work only for an unmet acceptance condition, a concrete defect/safety boundary, or an explicit user request. If acceptance is satisfied, do only the minimum required reconciliation and stop.
 5. **RDC / alternate environments are last-resort gap fillers.** Use Remote Desktop Commander, remote shells/desktops or equivalent only for an exact operation unavailable through the normal/native path. Keep it bounded and return to the normal path after the gap is closed. Repeated tool friction triggers path re-selection rather than escalation of the workaround.
 
+6. **Acceptance must follow the user's outcome, not activity counts.** Distinguish a merged implementation, scope-limited CI proof, actual deployment/readback and product/field acceptance. Record the first unverified requirement; never turn green tests or a published artifact into evidence of a behavior they did not exercise. Handle contradictory real-use regressions as new evidence. See `guidelines/GITHUB_OPERATING_RULES.md` §3A.
+
 ## Shared GitHub operating rules
 
 For GitHub implementation, review, merge, rollback, resume and confirmation behavior, apply `guidelines/GITHUB_OPERATING_RULES.md` after the live-state bootstrap described below.
