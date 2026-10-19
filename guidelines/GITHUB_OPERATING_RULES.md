@@ -50,6 +50,30 @@ Do not continue because another operation is merely related, available, cleaner,
 
 Prefer repository/GitHub-native execution and evidence surfaces. Repeated friction in an indirect or alternate tool route is a reason to change paths or leave a durable handoff, not to build more ceremony around that route.
 
+
+## 3A. Outcome-bound acceptance: do not confuse activity with user-visible completion
+
+An accepted change is a claim about a **specific requirement and observed outcome**, not a count of commits, passed checks, merged PRs, released artifacts or elapsed development effort.
+
+Before a non-trivial implementation or verification unit, derive an **acceptance contract from the user's actual objective**. Specify the observable behavior/quality, applicable operating environment, important failure/recovery cases and evidence needed to decide that requirement. Make the contract proportional to the task: not every change needs physical-device, auditory, browser and deployment tests, and recording more checks is not an end in itself. An owning Issue/specification remains authoritative for its actual product criteria.
+
+When declaring progress, keep distinct claims distinct:
+
+- **Implemented / source-integrated**: code or configuration exists on a named branch or accepted main. This alone says nothing about runtime behavior.
+- **Verified within scope**: named unit, integration, security, browser, DSP, CI or other tests passed **for their stated cases**, exact source/artifact and environment. A green CI result proves only what that check actually exercised.
+- **Published / deployed**: the intended artifact was delivered and its actual destination/entry point checked. A successful build or source merge is not proof of a successful deploy or public readback.
+- **Product / field accepted**: the user's actual requested workflow and relevant experience/physical environment have been shown to satisfy the owning acceptance contract, including recovery/failure behavior where required. Synthetic tests, simulations or automated proxies must not be represented as unperformed physical, audible or real-user acceptance.
+
+These are **evidence dimensions**, not a new universal state machine or mandatory four-stage pipeline. Record the accepted scope, source/artifact identity (SHA where applicable), exercised environment and cases, observed result and **first unverified acceptance condition** on the owning durable surface. Accept completed subunits without marking a larger user objective DONE; keep the remaining condition OPEN/UNVERIFIED/HOLD with a concrete recovery path, and do not repeat already accepted work merely because the parent remains open.
+
+If observed user behavior, a credible regression report or a real entry-point failure contradicts an inference drawn from earlier passing tests, **reopen the affected outcome claim for investigation**. Preserve the earlier test evidence as evidence of its limited coverage; reproduce the reported behavior, add appropriately discriminating positive/negative or A/B tests, identify the cause separately from the outcome, and verify the actual fix. Do not dismiss field evidence on the basis of a green synthetic fixture, and do not automatically declare every unverified report a proven defect.
+
+Before final completion, compare the original requested outcome with the independently supported evidence at the actual acceptance boundary. Declare DONE only for the scope genuinely accepted or expressly narrowed by the authorized owner. Unknown or untested is neither PASS nor FAIL. Machine-verifiable checks belong to the agent; genuinely subjective or inaccessible physical acceptance remains explicitly unverified rather than being silently replaced by a proxy or routinely pushed to the user.
+
+Examples of invalid inference: `PR merged -> product complete`; `138 synthetic audio tests passed -> audible transient quality accepted`; `Pages source built -> public site recovered`; `mock OAuth tests passed -> actual owner login accepted`. Each conclusion requires evidence appropriate to its own claim.
+
+This policy defines **how acceptance claims are supported**, not new devflow Work Status names, Review authority, release permission or Control metadata. Retain live devflow and owning-repository source-of-truth boundaries; stop after the required accepted scope and minimum directly affected record reconciliation.
+
 ## 4. Use a dedicated branch and Pull Request for normal changes
 
 For normal changes, do not write directly to the default branch.
