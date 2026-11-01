@@ -93,6 +93,23 @@ class ImprovementGuidelineRoutingTests(unittest.TestCase):
         self.assertNotIn(standard, gm.TASK_FILES["coding"])
         self.assertIn(standard, gm.EXPECTED_FILES)
 
+    def test_real_repository_task_returns_authoritative_file(self):
+        source = Path(gm.__file__).resolve().parent
+        reference = source / "guidelines/REFACTORING_OPTIMIZATION_STANDARD.md"
+        self.assertTrue(reference.is_file())
+        original_text = reference.read_text(encoding="utf-8")
+        self.assertGreater(len(original_text), 10000)
+        for task in ("refactoring", "optimization"):
+            result = gm.get_guidelines_for_task(task)
+            self.assertFalse(result["missing"])
+            self.assertFalse(result["truncated"])
+            doc = next(
+                item for item in result["documents"]
+                if item["path"] == "guidelines/REFACTORING_OPTIMIZATION_STANDARD.md"
+            )
+            self.assertFalse(doc["truncated"])
+            self.assertEqual(doc["content"], original_text)
+
     def test_improvement_task_reads_complete_standard(self):
         with tempfile.TemporaryDirectory() as location:
             root = Path(location)
