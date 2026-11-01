@@ -1,3 +1,4 @@
+import hashlib
 import tempfile
 import unittest
 from pathlib import Path
@@ -92,6 +93,21 @@ class ImprovementGuidelineRoutingTests(unittest.TestCase):
             self.assertIn(standard, gm.TASK_FILES[task])
         self.assertNotIn(standard, gm.TASK_FILES["coding"])
         self.assertIn(standard, gm.EXPECTED_FILES)
+
+    def test_setup_reports_exact_specialist_source_identity(self):
+        source = Path(gm.__file__).resolve().parent
+        path = source / "guidelines/REFACTORING_OPTIMIZATION_STANDARD.md"
+        actual = path.read_bytes()
+        status = gm.check_setup()
+        self.assertIn("refactoring", status["available_task_types"])
+        self.assertIn("optimization", status["available_task_types"])
+        specialist = status["specialist_standard"]
+        self.assertTrue(specialist["available"])
+        self.assertEqual(specialist["bytes"], len(actual))
+        self.assertEqual(specialist["sha256"], hashlib.sha256(actual).hexdigest())
+        self.assertEqual(
+            specialist["path"], "guidelines/REFACTORING_OPTIMIZATION_STANDARD.md"
+        )
 
     def test_real_repository_task_returns_authoritative_file(self):
         source = Path(gm.__file__).resolve().parent
