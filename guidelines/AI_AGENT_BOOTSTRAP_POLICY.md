@@ -132,6 +132,10 @@ Use Issue-first reporting:
 
 Chat concision never replaces the mandatory durable progress surface or affected-surface reconciliation for qualifying GitHub-backed work.
 
+## Refactoring and optimization specialist routing
+
+For requests to improve existing code through **lightweighting, processing efficiency, execution speed, responsibility separation, shared capability reuse, or clarity**, consult [Refactoring & Optimization Standard](REFACTORING_OPTIMIZATION_STANDARD.md) after obtaining the applicable higher-priority sources and owning repository contract. Its D0/D1/D2 diagnosis and G1/G2/G3 evidence labels are local improvement aids, **not** new devflow risk/tier, Review, CI, permission or merge gates. Historical drafts under [docs/refactoring-optimization/drafts](../docs/refactoring-optimization/drafts/) are archival and non-authoritative.
+
 ## Safety boundary
 
 The devflow MCP is expected to be read-only. Static guideline routing must not silently authorize release/deployment, destructive deletion, shared-history rewrite, credential/session/permission changes or other security-sensitive actions.
