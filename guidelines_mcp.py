@@ -43,6 +43,7 @@ SERVER_VERSION = "1.1.0"
 SERVER_INSTRUCTIONS = """
 このサーバーは、KiNoTchのコーディング・仕様管理・UI/UX規約を提供する読取専用MCPである。
 作業種別が分かる場合は、get_guidelines_for_taskで該当規約だけを取得すること。
+既存実装の改善では task_type=refactoring 又は optimization で専門標準の本文を取得すること。
 作業種別が不明な場合だけget_bootstrapを使い、返された案内に従って種別を判定すること。
 UI作業では00_START_HERE.mdを入口とし、必要な資料だけを読むこと。UIを実装又は変更した場合は、
 変更範囲に応じてget_review_checklistsを使用し、アクセシビリティ及びUIレビューを自己検収すること。
@@ -77,6 +78,7 @@ MAX_SEARCH_RESULTS = 100
 EXPECTED_FILES = (
     "guidelines/AI_AGENT_BOOTSTRAP_POLICY.md",
     "guidelines/AI_CODING_POLICY.md",
+    "guidelines/REFACTORING_OPTIMIZATION_STANDARD.md",
     "guidelines/SPEC_POLICY.md",
     "guidelines/UI_UX_POLICY.md",
     "guidelines/USABILITY_POLICY.md",
@@ -103,6 +105,18 @@ TASK_FILES: dict[str, tuple[str, ...]] = {
         "guidelines/AI_AGENT_BOOTSTRAP_POLICY.md",
         "guidelines/AI_CODING_POLICY.md",
         "guidelines/SPEC_POLICY.md",
+    ),
+    "refactoring": (
+        "guidelines/AI_AGENT_BOOTSTRAP_POLICY.md",
+        "guidelines/AI_CODING_POLICY.md",
+        "guidelines/SPEC_POLICY.md",
+        "guidelines/REFACTORING_OPTIMIZATION_STANDARD.md",
+    ),
+    "optimization": (
+        "guidelines/AI_AGENT_BOOTSTRAP_POLICY.md",
+        "guidelines/AI_CODING_POLICY.md",
+        "guidelines/SPEC_POLICY.md",
+        "guidelines/REFACTORING_OPTIMIZATION_STANDARD.md",
     ),
     "specification": (
         "guidelines/AI_AGENT_BOOTSTRAP_POLICY.md",
@@ -182,6 +196,8 @@ TASK_FILES: dict[str, tuple[str, ...]] = {
 
 TaskType = Literal[
     "coding",
+    "refactoring",
+    "optimization",
     "specification",
     "new_ui",
     "ui_improvement",
@@ -459,7 +475,9 @@ def get_guidelines_for_task(task_type: TaskType) -> dict[str, Any]:
     作業種別に対応する規約・テンプレート・チェックリストをまとめて取得する。
 
     task_type:
-    - coding: 通常の実装・修正
+    - coding: 通常の実装・修正（専門標準は必要時に別取得）
+    - refactoring: 既存挙動を保持する内部構造改善
+    - optimization: 軽量化・効率化・高速化を含む改善
     - specification: 要件定義・仕様作成・仕様変更
     - new_ui: 新規UI作成
     - ui_improvement: 既存UI改善

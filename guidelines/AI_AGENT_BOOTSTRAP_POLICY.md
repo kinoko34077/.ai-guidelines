@@ -134,7 +134,11 @@ Chat concision never replaces the mandatory durable progress surface or affected
 
 ## Refactoring and optimization specialist routing
 
-For requests to improve existing code through **lightweighting, processing efficiency, execution speed, responsibility separation, shared capability reuse, or clarity**, consult [Refactoring & Optimization Standard](REFACTORING_OPTIMIZATION_STANDARD.md) after obtaining the applicable higher-priority sources and owning repository contract. Its D0/D1/D2 diagnosis and G1/G2/G3 evidence labels are local improvement aids, **not** new devflow risk/tier, Review, CI, permission or merge gates. Historical drafts under [docs/refactoring-optimization/drafts](../docs/refactoring-optimization/drafts/) are archival and non-authoritative.
+For requests to improve existing code through **lightweighting, processing efficiency, execution speed, responsibility separation, shared capability reuse, or clarity**, consult [Refactoring & Optimization Standard](REFACTORING_OPTIMIZATION_STANDARD.md) **after reading the relevant live devflow and owning repository contract but before baseline selection, improvement design, or code mutation**. Recheck the canonical revision on a new improvement task entry, changed task/source scope, or interrupted-work resume; do not refetch it after every minor step.
+
+**Read the actual Markdown, not only the link or an index.** If the KiNoTch Guidelines MCP is available and up to date, call `get_guidelines_for_task(task_type="refactoring")` for internal structural changes or `task_type="optimization"` for performance/resource improvements, and confirm that the response includes complete, non-truncated `guidelines/REFACTORING_OPTIMIZATION_STANDARD.md`. Otherwise read the exact file through the connected GitHub reader or existing current checkout. Mark unavailable content **unread**, rather than treating a link or a claim of review as proof. The generic `coding` route remains lightweight and does not embed the specialist standard into unrelated tasks.
+
+Keep **one authoritative copy** in `.ai-guidelines`. Other repositories own their own contracts, performance budgets, tests, measurements and progress records; they do not need a duplicate Markdown copy. The specialist D0/D1/D2 diagnosis and G1/G2/G3 evidence labels are local improvement aids, **not** new devflow risk/tier, Review, CI, permission or merge gates. Historical drafts under [docs/refactoring-optimization/drafts](../docs/refactoring-optimization/drafts/) are archival and non-authoritative.
 
 ## Safety boundary
 

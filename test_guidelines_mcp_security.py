@@ -85,5 +85,56 @@ class FilesystemContainmentTests(unittest.TestCase):
         self.assertIn(target.resolve(), gm._iter_guideline_files(base))
 
 
+class ImprovementGuidelineRoutingTests(unittest.TestCase):
+    def test_specialist_standard_routed_only_for_improvement_tasks(self):
+        standard = "guidelines/REFACTORING_OPTIMIZATION_STANDARD.md"
+        for task in ("refactoring", "optimization"):
+            self.assertIn(standard, gm.TASK_FILES[task])
+        self.assertNotIn(standard, gm.TASK_FILES["coding"])
+        self.assertIn(standard, gm.EXPECTED_FILES)
+
+    def test_real_repository_task_returns_authoritative_file(self):
+        source = Path(gm.__file__).resolve().parent
+        reference = source / "guidelines/REFACTORING_OPTIMIZATION_STANDARD.md"
+        self.assertTrue(reference.is_file())
+        original_text = reference.read_text(encoding="utf-8")
+        self.assertGreater(len(original_text), 10000)
+        for task in ("refactoring", "optimization"):
+            result = gm.get_guidelines_for_task(task)
+            self.assertFalse(result["missing"])
+            self.assertFalse(result["truncated"])
+            doc = next(
+                item for item in result["documents"]
+                if item["path"] == "guidelines/REFACTORING_OPTIMIZATION_STANDARD.md"
+            )
+            self.assertFalse(doc["truncated"])
+            self.assertEqual(doc["content"], original_text)
+
+    def test_improvement_task_reads_complete_standard(self):
+        with tempfile.TemporaryDirectory() as location:
+            root = Path(location)
+            for relative in gm.TASK_FILES["refactoring"]:
+                file = root / relative
+                file.parent.mkdir(parents=True, exist_ok=True)
+                contents = (
+                    "FULL_SPECIALIST_STANDARD"
+                    if relative.endswith("REFACTORING_OPTIMIZATION_STANDARD.md")
+                    else f"policy:{relative}"
+                )
+                file.write_text(contents, encoding="utf-8")
+            with patch.object(gm, "ROOT", root.resolve()):
+                for task in ("refactoring", "optimization"):
+                    result = gm.get_guidelines_for_task(task)
+                    self.assertFalse(result["missing"])
+                    self.assertFalse(result["truncated"])
+                    docs = [
+                        document for document in result["documents"]
+                        if document["path"] == "guidelines/REFACTORING_OPTIMIZATION_STANDARD.md"
+                    ]
+                    self.assertEqual(len(docs), 1)
+                    self.assertEqual(docs[0]["content"], "FULL_SPECIALIST_STANDARD")
+                    self.assertFalse(docs[0]["truncated"])
+
+
 if __name__ == "__main__":
     unittest.main()
