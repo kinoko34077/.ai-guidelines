@@ -45,7 +45,7 @@ async def verify():
             assert "read_guideline" in tools
             assert "get_guidelines_for_task" in tools
             schema = json.dumps(
-                tools["get_guidelines_for_task"].inputSchema, sort_keys=True
+                tools["get_guidelines_for_task"].input_schema, sort_keys=True
             )
             for task in ("refactoring", "optimization"):
                 assert task in schema, f"task not advertised in live MCP schema: {task}"
