@@ -28,6 +28,7 @@ C:\Users\kinok\PRG\.ai-guidelines\
 
 from __future__ import annotations
 
+import hashlib
 import logging
 import os
 from datetime import datetime
@@ -38,7 +39,7 @@ from mcp.server import MCPServer
 
 
 SERVER_NAME = "KiNoTch Guidelines"
-SERVER_VERSION = "1.1.0"
+SERVER_VERSION = "1.1.1"
 
 SERVER_INSTRUCTIONS = """
 このサーバーは、KiNoTchのコーディング・仕様管理・UI/UX規約を提供する読取専用MCPである。
@@ -417,6 +418,27 @@ def _combine_files(relative_paths: tuple[str, ...] | list[str]) -> dict[str, Any
     }
 
 
+def _specialist_status() -> dict[str, Any]:
+    """Report exact local source bytes, independently of client tool-schema caching."""
+    relative = "guidelines/REFACTORING_OPTIMIZATION_STANDARD.md"
+    status: dict[str, Any] = {
+        "path": relative,
+        "task_types": ["refactoring", "optimization"],
+        "available": False,
+        "sha256": None,
+        "bytes": None,
+    }
+    try:
+        path = _resolve_file(relative)
+        contents = path.read_bytes()
+    except (FileNotFoundError, ValueError, OSError):
+        return status
+    status["available"] = True
+    status["bytes"] = len(contents)
+    status["sha256"] = hashlib.sha256(contents).hexdigest()
+    return status
+
+
 def _setup_status() -> dict[str, Any]:
     missing = [relative for relative in EXPECTED_FILES if not (ROOT / relative).is_file()]
     existing_top_level = {
@@ -439,6 +461,8 @@ def _setup_status() -> dict[str, Any]:
         "expected_file_count": len(EXPECTED_FILES),
         "missing_expected_files": missing,
         "ready": ROOT.exists() and not missing,
+        "available_task_types": list(TASK_FILES),
+        "specialist_standard": _specialist_status(),
     }
 
 
