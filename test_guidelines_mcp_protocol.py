@@ -19,8 +19,10 @@ STANDARD = "guidelines/REFACTORING_OPTIMIZATION_STANDARD.md"
 
 
 def decoded(result):
-    assert not result.isError, result
-    structured = getattr(result, "structuredContent", None)
+    assert not getattr(result, "is_error", getattr(result, "isError", False)), result
+    structured = getattr(result, "structured_content", None)
+    if structured is None:
+        structured = getattr(result, "structuredContent", None)
     if isinstance(structured, dict):
         return structured.get("result", structured)
     for item in result.content:
