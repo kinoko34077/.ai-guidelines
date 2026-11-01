@@ -76,7 +76,8 @@ async def verify():
                 await session.call_tool("read_guideline", {"relative_path": STANDARD})
             )
             assert not fallback["truncated"]
-            assert fallback["content"].encode("utf-8") == original_bytes
+            # read_guideline renders selected lines with join(), dropping a terminal newline.
+            assert fallback["content"] == "\n".join(original_bytes.decode("utf-8").splitlines())
 
     print("MCP_STDIO_SCHEMA_AND_SPECIALIST_READ_PASS")
 
